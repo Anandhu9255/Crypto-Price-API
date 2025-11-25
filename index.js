@@ -5,20 +5,27 @@ import { swaggerDocs } from "./swagger.js";
 
 const app = express();
 
-// Enable CORS for Swagger & frontend
+// Enable CORS
 app.use(cors());
 
 // Required for Render
 const PORT = process.env.PORT || 10000;
 
-// Initialize Swagger
+/* -------------------------
+   Initialize Swagger BEFORE routes
+-------------------------- */
 swaggerDocs(app);
 
+/* -------------------------
+   Root Route
+-------------------------- */
 app.get("/", (req, res) => {
   res.send("Crypto Price API is running");
 });
 
-// Map ticker → CoinGecko ID
+/* -------------------------
+   Symbol → CoinGecko ID Map
+-------------------------- */
 const symbolToId = {
   btc: "bitcoin",
   eth: "ethereum",
@@ -64,6 +71,9 @@ app.get("/price/:symbol", async (req, res) => {
   }
 });
 
+/* -------------------------
+   Start Server
+-------------------------- */
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
