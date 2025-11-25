@@ -2,30 +2,28 @@ import express from "express";
 import axios from "axios";
 import cors from "cors";
 import { swaggerDocs } from "./swagger.js";
+import cryptoRoutes from "./routes/cryptoRoutes.js";
 
 const app = express();
 
 // Enable CORS
 app.use(cors());
 
-// Required for Render
+// Render PORT
 const PORT = process.env.PORT || 10000;
 
-/* -------------------------
-   Initialize Swagger BEFORE routes
--------------------------- */
+// Swagger
 swaggerDocs(app);
 
-/* -------------------------
-   Root Route
--------------------------- */
+// Root
 app.get("/", (req, res) => {
   res.send("Crypto Price API is running");
 });
 
-/* -------------------------
-   Symbol → CoinGecko ID Map
--------------------------- */
+// Use Routes
+app.use("/api", cryptoRoutes);
+
+// Old single endpoint (optional, can keep or remove)
 const symbolToId = {
   btc: "bitcoin",
   eth: "ethereum",
@@ -47,7 +45,7 @@ const symbolToId = {
  *         required: true
  *         schema:
  *           type: string
- *         example: BTC
+ *         example: btc
  *     responses:
  *       200:
  *         description: Price data returned
@@ -71,9 +69,6 @@ app.get("/price/:symbol", async (req, res) => {
   }
 });
 
-/* -------------------------
-   Start Server
--------------------------- */
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

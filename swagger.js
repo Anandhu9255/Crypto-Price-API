@@ -12,11 +12,13 @@ const options = {
     },
     servers: [
       {
-        url: "https://crypto-price-api-oyqm.onrender.com", // NEW DEPLOY URL
+        url: "https://crypto-price-api-oyqm.onrender.com",
       },
     ],
   },
-  apis: ["./index.js"],
+
+  // FIX: Scan ALL route files
+  apis: ["./index.js", "./routes/*.js"], 
 };
 
 const swaggerSpec = swaggerJSDoc(options);
