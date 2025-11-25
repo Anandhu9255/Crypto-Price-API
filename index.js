@@ -34,22 +34,7 @@ const symbolToId = {
   dot: "polkadot",
 };
 
-/**
- * @openapi
- * /price/{symbol}:
- *   get:
- *     summary: Get crypto price
- *     parameters:
- *       - name: symbol
- *         in: path
- *         required: true
- *         schema:
- *           type: string
- *         example: btc
- *     responses:
- *       200:
- *         description: Price data returned
- */
+
 app.get("/price/:symbol", async (req, res) => {
   const symbol = req.params.symbol.toLowerCase();
   const id = symbolToId[symbol];
