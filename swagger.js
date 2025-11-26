@@ -1,5 +1,10 @@
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const options = {
   definition: {
@@ -11,11 +16,13 @@ const options = {
     },
     servers: [
       {
-        url: process.env.BASE_URL || "http://localhost:10000",
+        url: process.env.PORT
+          ? `https://crypto-price-api-oyqm.onrender.com`
+          : "http://localhost:10000",
       },
     ],
   },
-  apis: ["./routes/cryptoRoutes.js"], // Swagger annotations are in routes
+  apis: [path.join(__dirname, "./routes/*.js")], // ← parse all JS files in routes
 };
 
 const swaggerSpec = swaggerJSDoc(options);
