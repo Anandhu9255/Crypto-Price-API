@@ -11,11 +11,11 @@ const options = {
     },
     servers: [
       {
-        url: "https://crypto-price-api-oyqm.onrender.com",
+        url: process.env.BASE_URL || "http://localhost:10000",
       },
     ],
   },
-  apis: ["./routes/cryptoRoutes.js"],
+  apis: ["./routes/cryptoRoutes.js"], // Swagger annotations are in routes
 };
 
 const swaggerSpec = swaggerJSDoc(options);
