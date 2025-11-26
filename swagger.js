@@ -1,4 +1,3 @@
-// swagger.js
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 
@@ -16,9 +15,7 @@ const options = {
       },
     ],
   },
-
-  // FIX: Scan ALL route files
-  apis: ["./index.js", "./routes/*.js"], 
+  apis: ["./index.js", "./routes/*.js"],
 };
 
 const swaggerSpec = swaggerJSDoc(options);

@@ -1,63 +1,39 @@
-import axios from 'axios';
+import axios from "axios";
 
-// CoinGecko API base URL
-const COINGECKO_BASE_URL = 'https://api.coingecko.com/api/v3';
+const API_URL = "https://api.coinstats.app/public/v1";
 
-// Service to get prices for top 5 cryptocurrencies
+// Get top 5 prices
 export const getPricesService = async () => {
-  try {
-    const coins = ['bitcoin', 'ethereum', 'dogecoin', 'solana', 'bnb'];
-    const response = await axios.get(`${COINGECKO_BASE_URL}/simple/price`, {
-      params: {
-        ids: coins.join(','),
-        vs_currencies: 'usd'
-      }
-    });
-    return response.data;
-  } catch (error) {
-    throw new Error('Failed to fetch prices from CoinGecko');
-  }
+  const response = await axios.get(`${API_URL}/coins?limit=5`);
+  
+  return response.data.coins.map((coin) => ({
+    coin: coin.id,
+    price: coin.price,
+    marketCap: coin.marketCap,
+  }));
 };
 
-// Service to get price for a specific coin
+// Get price by coin ID (e.g., bitcoin)
 export const getPriceByCoinService = async (coinId) => {
-  try {
-    const response = await axios.get(`${COINGECKO_BASE_URL}/simple/price`, {
-      params: {
-        ids: coinId,
-        vs_currencies: 'usd'
-      }
-    });
-    if (!response.data[coinId]) {
-      throw new Error('Coin not found');
-    }
-    return response.data;
-  } catch (error) {
-    throw error;
+  const response = await axios.get(`${API_URL}/coins/${coinId}`);
+
+  if (!response.data.coin) {
+    throw new Error("Coin not found");
   }
+
+  return {
+    coin: response.data.coin.id,
+    price: response.data.coin.price,
+    marketCap: response.data.coin.marketCap,
+  };
 };
 
-// Service to get top 10 coins by market cap
+// Get top 10 coins by market cap
 export const getTopCoinsService = async () => {
-  try {
-    const response = await axios.get(`${COINGECKO_BASE_URL}/coins/markets`, {
-      params: {
-        vs_currency: 'usd',
-        order: 'market_cap_desc',
-        per_page: 10,
-        page: 1,
-        sparkline: false
-      }
-    });
+  const response = await axios.get(`${API_URL}/coins?limit=10`);
 
-    // Format the response to match the example
-    return response.data.map(coin => ({
-      name: coin.name,
-      symbol: coin.symbol,
-      price_usd: coin.current_price
-    }));
-  } catch (error) {
-    console.error('Error fetching top coins:', error);
-    throw new Error('Failed to fetch top coins from CoinGecko');
-  }
+  return response.data.coins.map((coin) => ({
+    coin: coin.id,
+    marketCap: coin.marketCap,
+  }));
 };
