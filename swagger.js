@@ -13,9 +13,12 @@ const options = {
       {
         url: "https://crypto-price-api-oyqm.onrender.com",
       },
+      {
+        url: "http://localhost:10000",
+      },
     ],
   },
-  apis: ["./index.js", "./routes/cryptoRoutes.js"], // FIXED
+  apis: ["./routes/cryptoRoutes.js"],
 };
 
 const swaggerSpec = swaggerJSDoc(options);
