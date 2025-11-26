@@ -22,11 +22,11 @@ const options = {
       },
     ],
   },
-  apis: [path.join(__dirname, "./routes/*.js")], // ← parse all JS files in routes
+  apis: [path.join(__dirname, "./routes/cryptoRoutes.js")],
 };
 
 const swaggerSpec = swaggerJSDoc(options);
 
 export const swaggerDocs = (app) => {
-  app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+  app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec, { explorer: true }));
 };
