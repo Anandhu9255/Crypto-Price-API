@@ -1,4 +1,7 @@
+import express from "express";
 import axios from "axios";
+
+const router = express.Router();
 
 const API_URL = "https://api.coinstats.app/public/v1";
 
@@ -11,53 +14,61 @@ const api = axios.create({
   },
 });
 
-// Get top 5 prices
-export const getPricesService = async () => {
+// 🔹 GET top 5 prices
+router.get("/prices", async (req, res) => {
   try {
     const response = await api.get("/coins?limit=5");
 
-    return response.data.coins.map((coin) => ({
+    const data = response.data.coins.map((coin) => ({
       coin: coin.id,
       price: coin.price,
       marketCap: coin.marketCap,
     }));
-  } catch (error) {
-    console.error("Error fetching prices:", error.message);
-    throw new Error("Failed to fetch prices");
-  }
-};
 
-// Get price by coin ID (e.g., bitcoin)
-export const getPriceByCoinService = async (coinId) => {
+    res.json(data);
+  } catch (error) {
+    console.error("Prices API Error:", error.message);
+    res.status(500).json({ error: "Failed to fetch prices" });
+  }
+});
+
+// 🔹 GET price for specific coin
+router.get("/prices/:coin", async (req, res) => {
+  const { coin } = req.params;
+
   try {
-    const response = await api.get(`/coins/${coinId}`);
+    const response = await api.get(`/coins/${coin}`);
 
     if (!response.data.coin) {
-      throw new Error("Coin not found");
+      return res.status(404).json({ error: "Coin not found" });
     }
 
-    return {
+    res.json({
       coin: response.data.coin.id,
       price: response.data.coin.price,
       marketCap: response.data.coin.marketCap,
-    };
+    });
   } catch (error) {
-    console.error("Error fetching price by coin:", error.message);
-    throw new Error("Coin not found");
+    console.error("Coin API Error:", error.message);
+    res.status(404).json({ error: "Coin not found" });
   }
-};
+});
 
-// Get top 10 coins by market cap
-export const getTopCoinsService = async () => {
+// 🔹 GET top 10 by market cap
+router.get("/top", async (req, res) => {
   try {
     const response = await api.get("/coins?limit=10");
 
-    return response.data.coins.map((coin) => ({
+    const data = response.data.coins.map((coin) => ({
       coin: coin.id,
       marketCap: coin.marketCap,
     }));
+
+    res.json(data);
   } catch (error) {
-    console.error("Error fetching top coins:", error.message);
-    throw new Error("Failed to fetch top coins");
+    console.error("Top Coins API Error:", error.message);
+    res.status(500).json({ error: "Failed to fetch top coins" });
   }
-};
+});
+
+export default router;
