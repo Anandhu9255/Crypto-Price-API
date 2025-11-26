@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import cryptoRoutes from "./routes/cryptoRoutes.js";
-import swaggerDocs from "./swagger.js"; // default import
+import { swaggerDocs } from "./swagger.js";
 
 const app = express();
 
