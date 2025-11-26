@@ -69,9 +69,9 @@ router.get("/prices", async (req, res) => {
  *     parameters:
  *       - in: path
  *         name: coin
+ *         required: true
  *         schema:
  *           type: string
- *         required: true
  *         description: The cryptocurrency ID (e.g., bitcoin, ethereum)
  *     responses:
  *       200:
