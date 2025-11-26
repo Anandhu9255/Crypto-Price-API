@@ -15,7 +15,7 @@ const options = {
       },
     ],
   },
-  apis: ["./index.js", "./routes/*.js"],
+  apis: ["./index.js", "./routes/cryptoRoutes.js"], // FIXED
 };
 
 const swaggerSpec = swaggerJSDoc(options);

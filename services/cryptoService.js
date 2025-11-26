@@ -13,7 +13,7 @@ export const getPricesService = async () => {
   }));
 };
 
-// Get price by coin ID (e.g., bitcoin)
+// Get price by coin ID
 export const getPriceByCoinService = async (coinId) => {
   const response = await axios.get(`${API_URL}/coins/${coinId}`);
 
